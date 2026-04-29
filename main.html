@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* --- Renkler ve Temel Ayarlar --- */
+        :root {
+            --arka-plan: #121212;
+            --kart-arka-plan: #1e1e1e;
+            --metin-ana: #ffffff;
+            --metin-yan: #a0a0a0;
+            --yesil-tema: #10b981; /* İşte istediğin yeşil detaylar */
+            --yesil-hover: #059669;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--arka-plan);
+            color: var(--metin-ana);
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--yesil-tema);
+            transition: color 0.3s;
+        }
+
+        a:hover {
+            color: var(--yesil-hover);
+        }
+
+        /* --- Menü (Navbar) --- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 10%;
+            background-color: rgba(18, 18, 18, 0.95);
+            position: sticky;
+            top: 0;
+            border-bottom: 1px solid #333;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--yesil-tema);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        nav ul li a {
+            color: var(--metin-ana);
+            font-weight: 500;
+        }
+
+        nav ul li a:hover {
+            color: var(--yesil-tema);
+        }
+
+        /* --- Giriş Bölümü (Hero Section) --- */
+        .hero {
+            height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 0 10%;
+        }
+
+        .hero h3 {
+            color: var(--yesil-tema);
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .hero h1 {
+            font-size: 60px;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            color: var(--metin-yan);
+            max-width: 600px;
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            padding: 12px 28px;
+            background-color: transparent;
+            color: var(--yesil-tema);
+            border: 2px solid var(--yesil-tema);
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            background-color: var(--yesil-tema);
+            color: var(--arka-plan);
+        }
+
+        /* --- Hakkımda & Yetenekler --- */
+        .section-title {
+            font-size: 32px;
+            margin-bottom: 40px;
+            text-align: center;
+            color: var(--metin-ana);
+        }
+
+        .section-title span {
+            color: var(--yesil-tema);
+        }
+
+        .container {
+            padding: 80px 10%;
+        }
+
+        .skills-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .skill-tag {
+            background-color: var(--kart-arka-plan);
+            border-left: 4px solid var(--yesil-tema);
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        /* --- Projeler --- */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .project-card {
+            background-color: var(--kart-arka-plan);
+            padding: 30px;
+            border-radius: 8px;
+            transition: transform 0.3s;
+            border-top: 4px solid transparent;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            border-top: 4px solid var(--yesil-tema);
+        }
+
+        .project-card h3 {
+            margin-bottom: 15px;
+            font-size: 22px;
+        }
+
+        .project-card p {
+            color: var(--metin-yan);
+            margin-bottom: 20px;
+        }
+
+        /* --- Footer / İletişim --- */
+        footer {
+            text-align: center;
+            padding: 40px 10%;
+            border-top: 1px solid #333;
+            margin-top: 50px;
+        }
+
+        footer p {
+            color: var(--metin-yan);
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Navigasyon Menüsü -->
+    <nav>
+        <div class="logo">&lt;Adın/&gt;</div>
+        <ul>
+            <li><a href="#hakkimda">Hakkımda</a></li>
+            <li><a href="#yetenekler">Yetenekler</a></li>
+            <li><a href="#projeler">Projeler</a></li>
+            <li><a href="#iletisim">İletişim</a></li>
+        </ul>
+    </nav>
+
+    <!-- Giriş (Hero) Alanı -->
+ <section class="hero" style="display: flex; flex-direction: column; align-items: center; text-align: center;">
+    <h3>Software Engineer</h3>
+    <h1>kerem holoğlu</h1>
+    <h2>2. sınıf öğrencisiyim</h2>
+    <p>yazılım geliştiriyorum istenilen yazılım geliştirilir</p>
+    <a href="mailto:keremhologlu2007@gmail.com"><button class="btn">Bana Ulaş</button></a>
+</section>
+
+    <!-- Hakkımda & Yetenekler Alanı -->
+    <section id="yetenekler" class="container">
+        <h2 class="section-title">bildiğim <span>diller</span></h2>
+        <p style="text-align: center; color: var(--metin-yan); max-width: 800px; margin: 0 auto 40px auto;">
+            
+        </p>
+        
+        <div class="skills-grid">
+            <div class="skill-tag">HTML & CSS</div>
+            <div class="skill-tag">JavaScript</div>
+            <div class="skill-tag">React.js</div>
+            <div class="skill-tag">Node.js</div>
+            <div class="skill-tag">Python</div>
+            <div class="skill-tag">Git & GitHub</div>
+            <div class="skill-tag">c</div>
+            <div class="skill-tag">c#</div>
+        </div>
+    </section>
+
+    <!-- Projeler Alanı -->
+    <section id="projeler" class="container">
+        <h2 class="section-title">Geliştirdiğim <span>Projeler</span></h2>
+        
+        <div class="projects-grid">
+            <div class="project-card">
+            <h2>düzenleniyor....</h2>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer / İletişim Alanı -->
+    <footer id="iletisim">
+        <h2 class="section-title">Benimle <span>İletişime Geç</span></h2>
+        <p style="margin-bottom: 20px;">Yeni bir proje fikrin mi var veya sadece merhaba mı demek istiyorsun? Mail atabilirsin!</p>
+        <a href="mailto:keremhologlu2007.com"><button class="btn">E-Posta Gönder</button></a>
+        <a href="https://github.com/kreholo"><button class="btn">GitHub</button></a>
+        <p style="margin-top: 40px; font-size: 14px;">Tasarım ve Kodlama: kerem holoğlu &copy; 2026</p>
+    </footer>
+
+</body>
+</html>
