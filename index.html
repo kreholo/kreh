@@ -3,281 +3,918 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kerem Holoğlu — Yazılım Mühendisi</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+
     <style>
-        /* --- Renkler ve Temel Ayarlar --- */
         :root {
-            --arka-plan: #121212;
-            --kart-arka-plan: #1e1e1e;
-            --metin-ana: #ffffff;
-            --metin-yan: #a0a0a0;
-            --yesil-tema: #10b981; /* İşte istediğin yeşil detaylar */
-            --yesil-hover: #059669;
+            --bg:        #0d0d0d;
+            --bg-card:   #161616;
+            --bg-card2:  #1c1c1c;
+            --border:    #2a2a2a;
+            --green:     #10b981;
+            --green-dim: rgba(16,185,129,.12);
+            --green-glow:rgba(16,185,129,.25);
+            --text:      #f0f0f0;
+            --muted:     #888;
+            --muted2:    #555;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+        html { scroll-behavior: smooth; }
 
         body {
-            background-color: var(--arka-plan);
-            color: var(--metin-ana);
-            line-height: 1.6;
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 400;
+            line-height: 1.7;
+            overflow-x: hidden;
         }
 
-        a {
-            text-decoration: none;
-            color: var(--yesil-tema);
-            transition: color 0.3s;
+        /* --- subtle grid bg --- */
+        body::before {
+            content: '';
+            position: fixed; inset: 0;
+            background-image:
+                linear-gradient(var(--border) 1px, transparent 1px),
+                linear-gradient(90deg, var(--border) 1px, transparent 1px);
+            background-size: 60px 60px;
+            opacity: .25;
+            pointer-events: none;
+            z-index: 0;
         }
 
-        a:hover {
-            color: var(--yesil-hover);
-        }
+        section, nav, footer { position: relative; z-index: 1; }
 
-        /* --- Menü (Navbar) --- */
+        a { text-decoration: none; color: var(--green); transition: color .25s; }
+        a:hover { color: #34d399; }
+
+        /* ====== NAV ====== */
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 10%;
-            background-color: rgba(18, 18, 18, 0.95);
+            padding: 18px 7%;
+            background: rgba(13,13,13,.92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
             position: sticky;
             top: 0;
-            border-bottom: 1px solid #333;
-            z-index: 100;
+            z-index: 999;
         }
 
         .logo {
-            font-size: 24px;
-            font-weight: bold;
-            color: var(--yesil-tema);
+            font-family: 'Space Mono', monospace;
+            font-size: 16px;
+            color: var(--green);
+            letter-spacing: -.5px;
         }
 
-        nav ul {
+        .nav-links {
             list-style: none;
             display: flex;
-            gap: 20px;
+            gap: 28px;
         }
 
-        nav ul li a {
-            color: var(--metin-ana);
+        .nav-links a {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
             font-weight: 500;
+            color: var(--muted);
+            letter-spacing: .5px;
+            text-transform: uppercase;
+        }
+        .nav-links a:hover { color: var(--green); }
+
+        /* hamburger */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 4px;
+            background: none;
+            border: none;
+        }
+        .hamburger span {
+            display: block;
+            width: 24px; height: 2px;
+            background: var(--text);
+            border-radius: 2px;
+            transition: all .3s;
         }
 
-        nav ul li a:hover {
-            color: var(--yesil-tema);
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(13,13,13,.98);
+            z-index: 998;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 36px;
+        }
+        .mobile-menu.open { display: flex; }
+        .mobile-menu a {
+            font-family: 'Syne', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text);
+        }
+        .mobile-menu a:hover { color: var(--green); }
+
+        .close-btn {
+            position: absolute;
+            top: 22px; right: 7%;
+            font-size: 28px;
+            background: none;
+            border: none;
+            color: var(--muted);
+            cursor: pointer;
         }
 
-        /* --- Giriş Bölümü (Hero Section) --- */
+        /* ====== HERO ====== */
         .hero {
-            height: 80vh;
+            min-height: 90vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            align-items: flex-start;
-            padding: 0 10%;
+            padding: 80px 7% 60px;
         }
 
-        .hero h3 {
-            color: var(--yesil-tema);
-            font-size: 20px;
-            margin-bottom: 10px;
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Space Mono', monospace;
+            font-size: 12px;
+            color: var(--green);
+            background: var(--green-dim);
+            border: 1px solid rgba(16,185,129,.3);
+            border-radius: 50px;
+            padding: 6px 14px;
+            margin-bottom: 28px;
+            width: fit-content;
+        }
+        .hero-badge::before {
+            content: '';
+            width: 7px; height: 7px;
+            border-radius: 50%;
+            background: var(--green);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%,100% { opacity:1; transform:scale(1); }
+            50%      { opacity:.5; transform:scale(.8); }
         }
 
         .hero h1 {
-            font-size: 60px;
-            margin-bottom: 15px;
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(42px, 8vw, 80px);
+            font-weight: 800;
+            line-height: 1.05;
+            letter-spacing: -2px;
+            margin-bottom: 8px;
         }
 
-        .hero p {
-            color: var(--metin-yan);
-            max-width: 600px;
-            font-size: 18px;
-            margin-bottom: 30px;
+        .hero h1 .name-green { color: var(--green); }
+
+        .hero-sub {
+            font-family: 'Space Mono', monospace;
+            font-size: clamp(13px, 2vw, 16px);
+            color: var(--muted);
+            margin-bottom: 24px;
+            letter-spacing: .5px;
         }
 
-        .btn {
-            padding: 12px 28px;
-            background-color: transparent;
-            color: var(--yesil-tema);
-            border: 2px solid var(--yesil-tema);
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .btn:hover {
-            background-color: var(--yesil-tema);
-            color: var(--arka-plan);
-        }
-
-        /* --- Hakkımda & Yetenekler --- */
-        .section-title {
-            font-size: 32px;
+        .hero-desc {
+            font-size: clamp(15px, 2vw, 17px);
+            color: var(--muted);
+            max-width: 520px;
             margin-bottom: 40px;
-            text-align: center;
-            color: var(--metin-ana);
+            font-weight: 300;
+            line-height: 1.8;
         }
 
-        .section-title span {
-            color: var(--yesil-tema);
-        }
+        .hero-desc strong { color: var(--text); font-weight: 500; }
 
-        .container {
-            padding: 80px 10%;
-        }
-
-        .skills-grid {
+        .hero-btns {
             display: flex;
+            gap: 14px;
             flex-wrap: wrap;
-            gap: 15px;
-            justify-content: center;
-            margin-top: 20px;
         }
 
-        .skill-tag {
-            background-color: var(--kart-arka-plan);
-            border-left: 4px solid var(--yesil-tema);
-            padding: 10px 20px;
-            border-radius: 4px;
-            font-weight: bold;
+        .btn-primary {
+            padding: 13px 28px;
+            background: var(--green);
+            color: #0d0d0d;
+            border: none;
+            border-radius: 6px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all .25s;
+            display: inline-block;
+        }
+        .btn-primary:hover {
+            background: #34d399;
+            color: #0d0d0d;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px var(--green-glow);
         }
 
-        /* --- Projeler --- */
+        .btn-outline {
+            padding: 13px 28px;
+            background: transparent;
+            color: var(--text);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all .25s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-outline:hover {
+            border-color: var(--green);
+            color: var(--green);
+            transform: translateY(-2px);
+        }
+
+        /* ====== SECTION SHARED ====== */
+        .section { padding: 80px 7%; }
+
+        .section-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            color: var(--green);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+        }
+
+        .section-title {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(26px, 4vw, 40px);
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 50px;
+            line-height: 1.1;
+        }
+
+        .section-title span { color: var(--green); }
+
+        /* ====== ABOUT ====== */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        .about-text p {
+            color: var(--muted);
+            font-size: 16px;
+            line-height: 1.9;
+            margin-bottom: 16px;
+        }
+        .about-text p strong { color: var(--text); }
+
+        .about-stats {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            transition: border-color .3s;
+        }
+        .stat-card:hover { border-color: var(--green); }
+
+        .stat-icon {
+            font-size: 24px;
+            width: 44px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .stat-info small {
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            color: var(--muted2);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+        .stat-info p {
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--text);
+            margin-top: 2px;
+        }
+
+        /* ====== EXPERIENCE / TIMELINE ====== */
+        .timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .timeline-item {
+            display: grid;
+            grid-template-columns: 140px 1px 1fr;
+            gap: 0 24px;
+            padding-bottom: 40px;
+        }
+        .timeline-item:last-child { padding-bottom: 0; }
+
+        .timeline-date {
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            color: var(--muted2);
+            padding-top: 4px;
+            text-align: right;
+            line-height: 1.5;
+        }
+
+        .timeline-line {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .timeline-dot {
+            width: 10px; height: 10px;
+            border-radius: 50%;
+            background: var(--green);
+            border: 2px solid var(--bg);
+            box-shadow: 0 0 0 3px var(--green-dim);
+            flex-shrink: 0;
+            margin-top: 5px;
+        }
+        .timeline-line::after {
+            content: '';
+            flex: 1;
+            width: 1px;
+            background: var(--border);
+            margin-top: 8px;
+        }
+        .timeline-item:last-child .timeline-line::after { display: none; }
+
+        .timeline-content {
+            padding-bottom: 10px;
+        }
+
+        .timeline-tag {
+            display: inline-block;
+            font-size: 10px;
+            font-family: 'Space Mono', monospace;
+            color: var(--green);
+            background: var(--green-dim);
+            border-radius: 3px;
+            padding: 2px 8px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .timeline-content h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .timeline-content .company {
+            font-size: 13px;
+            color: var(--green);
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .timeline-content p {
+            font-size: 14px;
+            color: var(--muted);
+            line-height: 1.8;
+        }
+
+        /* ====== SKILLS ====== */
+        .skills-cols {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+        }
+
+        .skill-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all .25s;
+        }
+        .skill-item:hover {
+            border-color: var(--green);
+            background: var(--green-dim);
+            transform: translateX(4px);
+        }
+        .skill-dot {
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: var(--green);
+            flex-shrink: 0;
+        }
+
+        /* ====== PROJECTS ====== */
         .projects-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
         }
 
         .project-card {
-            background-color: var(--kart-arka-plan);
-            padding: 30px;
-            border-radius: 8px;
-            transition: transform 0.3s;
-            border-top: 4px solid transparent;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 28px;
+            transition: all .3s;
+            display: flex;
+            flex-direction: column;
+        }
+        .project-card:hover {
+            border-color: var(--green);
+            transform: translateY(-6px);
+            box-shadow: 0 16px 40px rgba(0,0,0,.4);
         }
 
-        .project-card:hover {
-            transform: translateY(-10px);
-            border-top: 4px solid var(--yesil-tema);
+        .project-emoji {
+            font-size: 26px;
+            margin-bottom: 16px;
         }
 
         .project-card h3 {
-            margin-bottom: 15px;
-            font-size: 22px;
+            font-family: 'Syne', sans-serif;
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 10px;
         }
 
         .project-card p {
-            color: var(--metin-yan);
+            color: var(--muted);
+            font-size: 13.5px;
+            line-height: 1.75;
+            flex: 1;
+        }
+
+        .project-status {
+            margin-top: 16px;
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            color: var(--muted2);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .project-status .dot {
+            width: 6px; height: 6px;
+            border-radius: 50%;
+        }
+        .dot-active  { background: var(--green); }
+        .dot-done    { background: #60a5fa; }
+        .dot-wip     { background: #f59e0b; }
+
+        /* ====== EXTRAS: lang + hobbies ====== */
+        .extras-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+        }
+
+        .extra-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 28px;
+        }
+
+        .extra-card h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--green);
             margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        /* --- Footer / İletişim --- */
+        .lang-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+        .lang-row span { font-size: 14px; font-weight: 500; }
+        .lang-level {
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            color: var(--green);
+            background: var(--green-dim);
+            padding: 3px 10px;
+            border-radius: 4px;
+        }
+
+        .hobby-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--bg-card2);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 9px 14px;
+            font-size: 13px;
+            margin: 0 8px 8px 0;
+        }
+
+        /* ====== FOOTER ====== */
         footer {
+            border-top: 1px solid var(--border);
+            padding: 60px 7% 40px;
             text-align: center;
-            padding: 40px 10%;
-            border-top: 1px solid #333;
-            margin-top: 50px;
         }
 
-        footer p {
-            color: var(--metin-yan);
+        .footer-title {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(28px, 5vw, 52px);
+            font-weight: 800;
+            letter-spacing: -2px;
+            margin-bottom: 12px;
+        }
+        .footer-title span { color: var(--green); }
+
+        .footer-sub {
+            color: var(--muted);
+            font-size: 15px;
+            margin-bottom: 36px;
         }
 
+        .footer-btns {
+            display: flex;
+            gap: 14px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 60px;
+        }
+
+        .footer-copy {
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            color: var(--muted2);
+            letter-spacing: 1px;
+        }
+
+        /* ====== DIVIDER ====== */
+        .divider {
+            height: 1px;
+            background: var(--border);
+            margin: 0 7%;
+        }
+
+        /* ====== ANIMATIONS ====== */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity .6s ease, transform .6s ease;
+        }
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ====== MOBILE ====== */
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hamburger { display: flex; }
+
+            .hero { padding: 60px 6% 50px; min-height: 80vh; }
+
+            .about-grid   { grid-template-columns: 1fr; }
+            .extras-grid  { grid-template-columns: 1fr; }
+
+            .section { padding: 60px 6%; }
+            .divider  { margin: 0 6%; }
+
+            .timeline-item {
+                grid-template-columns: 90px 1px 1fr;
+                gap: 0 16px;
+            }
+            .timeline-date { font-size: 10px; }
+
+            .projects-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 480px) {
+            .timeline-item {
+                grid-template-columns: 0 1px 1fr;
+            }
+            .timeline-date { display: none; }
+        }
     </style>
 </head>
 <body>
 
-    <!-- Navigasyon Menüsü -->
-    <nav>
-        <div class="logo">&lt;kerem holoğlu/&gt;</div>
-        <ul>
-            <li><a href="#hakkimda">Hakkımda</a></li>
-            <li><a href="#yetenekler">Yetenekler</a></li>
-            <li><a href="#projeler">Projeler</a></li>
-        </ul>
-    </nav>
+<!-- ===== NAV ===== -->
+<nav>
+    <div class="logo">&lt;kreholo /&gt;</div>
+    <ul class="nav-links">
+        <li><a href="#hakkimda">Hakkımda</a></li>
+        <li><a href="#deneyim">Deneyim</a></li>
+        <li><a href="#yetenekler">Yetenekler</a></li>
+        <li><a href="#projeler">Projeler</a></li>
+        <li><a href="#iletisim">İletişim</a></li>
+    </ul>
+    <button class="hamburger" onclick="openMenu()">
+        <span></span><span></span><span></span>
+    </button>
+</nav>
 
-    <!-- Giriş (Hero) Alanı -->
- <section class="hero" style="display: flex; flex-direction: column; align-items: center; text-align: center;">
-    <h3>Software Engineer</h3>
-    <h1>kerem holoğlu</h1>
-    <h2>2. sınıf öğrencisiyim</h2>
-    <p>yazılım geliştiriyorum istenilen yazılım geliştirilir</p>
-    <a href="mailto:keremhologlu2007@gmail.com"><button class="btn">Bana Ulaş</button></a>
+<div class="mobile-menu" id="mobileMenu">
+    <button class="close-btn" onclick="closeMenu()">✕</button>
+    <a href="#hakkimda" onclick="closeMenu()">Hakkımda</a>
+    <a href="#deneyim" onclick="closeMenu()">Deneyim</a>
+    <a href="#yetenekler" onclick="closeMenu()">Yetenekler</a>
+    <a href="#projeler" onclick="closeMenu()">Projeler</a>
+    <a href="#iletisim" onclick="closeMenu()">İletişim</a>
+</div>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+    <div class="hero-badge">Müsait — Yeni projeler için iletişime geçilebilir</div>
+    <h1>Kerem<br><span class="name-green">Holoğlu.</span></h1>
+    <p class="hero-sub">// Yazılım Mühendisi · Kırklareli Üniversitesi, 2. Sınıf</p>
+    <p class="hero-desc">
+        <strong>Öğrenmeye ve deneme yanılmaya açık</strong> bir yazılım mühendisliği öğrencisiyim.
+        Geliştirdiğim her proje, yeni bir şey öğrendiğim bir süreçtir.
+        Web geliştirmeden oyun tasarımına uzanan geniş bir ilgi alanım var.
+    </p>
+    <div class="hero-btns">
+        <a href="mailto:keremhologlu2007@gmail.com"><button class="btn-primary">Bana Ulaş</button></a>
+        <a href="https://github.com/kreholo" target="_blank"><button class="btn-outline">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/></svg>
+            GitHub
+        </button></a>
+    </div>
 </section>
 
-    <!-- Hakkımda & Yetenekler Alanı -->
-    <section id="yetenekler" class="container">
-        <h2 class="section-title">bildiğim <span>diller</span></h2>
-        <p style="text-align: center; color: var(--metin-yan); max-width: 800px; margin: 0 auto 40px auto;">
-            
-        </p>
-        
-        <div class="skills-grid">
-            <div class="skill-tag">HTML & CSS</div>
-            <div class="skill-tag">JavaScript</div>
-            <div class="skill-tag">React.js</div>
-            <div class="skill-tag">Node.js</div>
-            <div class="skill-tag">Python</div>
-            <div class="skill-tag">Git & GitHub</div>
-            <div class="skill-tag">c</div>
-            <div class="skill-tag">c#</div>
-        </div>
-    </section>
+<div class="divider"></div>
 
-    <section id="projeler" class="container">
-        <h2 class="section-title">Geliştirdiğim <span>Projeler</span></h2>
-        
-        <div class="projects-grid">
-            <div class="project-card">
-                <h3>D&D Online Platformu ⏳</h3>
-                <p>Masaüstü rol yapma oyunlarını (D&D) çevrimiçi ortamda akıcı bir şekilde oynamayı sağlayacak interaktif bir web sitesi geliştiriyorum. Şu an aktif olarak kodlanıyor.</p>
-            </div>
+<!-- ===== HAKKIMDA ===== -->
+<section class="section fade-up" id="hakkimda">
+    <p class="section-label">01 — Hakkımda</p>
+    <h2 class="section-title">Kim <span>Olduğum</span></h2>
 
-            <div class="project-card">
-                <h3>Gekkotari Oyun Portalı 🎨</h3>
-                <p>Oyun dünyasını bir araya getirecek "Gekkotari" adında yepyeni ve modern bir oyun portalının arayüz ve sistem tasarım süreçlerini yürütüyorum.</p>
-            </div>
-
-            <div class="project-card">
-                <h3>Akademik Projeler ⚙️</h3>
-                <p>Bir profesörün talebi üzerine geliştirilen iki farklı sistemin ana kodlama aşamalarını tamamladım. Şu anda veritabanı entegrasyonları ve verilerin işlenmesi üzerinde çalışıyorum.</p>
-            </div>
-
-            <div class="project-card">
-                <h3>"Surprise" Doğum Günü Platformu ✅</h3>
-                <p>Kullanıcıların URL parametreleri üzerinden kişiselleştirilmiş mesajlar ve tarihler girerek kendilerine özel, interaktif tebrik linkleri oluşturabildiği bir kutlama platformu kodlayıp yayına aldım.</p>
-            </div>
-
-            <div class="project-card">
-                <h3>Bağımsız Oyun Geliştirme 🎮</h3>
-                <p>Web projelerimin yanı sıra farklı teknolojiler deneyimlemek ve kendi oyunumu hayata geçirmek için oyun mekanikleri üzerine çalışmalar yapıyorum.</p>
-            </div>
-        </div>
-
-        <div style="text-align: center; margin-top: 60px; padding: 30px; background-color: var(--kart-arka-plan); border-radius: 8px; border-left: 4px solid var(--yesil-tema);">
-            <h3 style="color: var(--yesil-tema); margin-bottom: 15px; font-size: 22px;">Neden Web Geliştirme?</h3>
-            <p style="color: var(--metin-yan); font-size: 17px; max-width: 800px; margin: 0 auto;">
-                Yazılımı özellikle web üzerinden geliştirmeyi seviyorum. Çünkü saatlerce uğraşıp ortaya çıkardığım bir projeyi sadece bir tıkla tüm dünyaya açabilmek, herkesin erişebildiği canlı bir sistem kurmak bana asıl tatmini sağlıyor.
+    <div class="about-grid">
+        <div class="about-text">
+            <p>
+                Kırklareli Üniversitesi Yazılım Mühendisliği bölümünde <strong>2. sınıf öğrencisiyim.</strong>
+                Kod yazmayı seviyorum ama asıl sevdiğim şey bir problemi çözme sürecinin kendisi.
+            </p>
+            <p>
+                Öğrenirken en iyi öğrendiğim için proje bazlı çalışmayı tercih ediyorum.
+                Web geliştirme, oyun tasarımı ve üniversite kulüplerindeki yöneticilik deneyimlerim
+                bana hem teknik hem de sosyal beceriler kazandırdı.
+            </p>
+            <p>
+                Sosyal biriyim — takım çalışmasına yatkınım, yeni insanlarla çalışmaktan çekinmem.
+                Kick boks geçmişim disiplini ve kararlılığı da yanıma kattı.
             </p>
         </div>
-    </section>
 
+        <div class="about-stats">
+            <div class="stat-card">
+                <div class="stat-icon">🎓</div>
+                <div class="stat-info">
+                    <small>Okul</small>
+                    <p>Kırklareli Üniversitesi — Yazılım Mühendisliği</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📍</div>
+                <div class="stat-info">
+                    <small>Konum</small>
+                    <p>Kırklareli, Türkiye</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🌐</div>
+                <div class="stat-info">
+                    <small>GitHub</small>
+                    <p><a href="https://github.com/kreholo" target="_blank">github.com/kreholo</a></p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">✉️</div>
+                <div class="stat-info">
+                    <small>E-Posta</small>
+                    <p><a href="mailto:keremhologlu2007@gmail.com">keremhologlu2007@gmail.com</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
-    <!-- Footer / İletişim Alanı -->
-    <footer id="iletisim">
-        <h2 class="section-title">Benimle <span>İletişime Geç</span></h2>
-        <p style="margin-bottom: 20px;">Yeni bir proje fikrin mi var veya sadece merhaba mı demek istiyorsun? Mail atabilirsin!</p>
-        <a href="mailto:keremhologlu2007.com"><button class="btn">E-Posta Gönder</button></a>
-        <a href="https://github.com/kreholo"><button class="btn">GitHub</button></a>
-        <p style="margin-top: 40px; font-size: 14px;">Tasarım ve Kodlama: kerem holoğlu &copy; 2026</p>
-    </footer>
+<div class="divider"></div>
+
+<!-- ===== DENEYİM ===== -->
+<section class="section fade-up" id="deneyim">
+    <p class="section-label">02 — Deneyim</p>
+    <h2 class="section-title">İş & <span>Kulüp</span></h2>
+
+    <div class="timeline">
+
+        <div class="timeline-item">
+            <div class="timeline-date">2024 —<br>Günümüz</div>
+            <div class="timeline-line"><div class="timeline-dot"></div></div>
+            <div class="timeline-content">
+                <span class="timeline-tag">Kulüp · Aktif</span>
+                <h3>Yönetici</h3>
+                <p class="company">Oyun Tasarım ve Geliştirme Kulübü — Kırklareli Üniversitesi</p>
+                <p>Kulüp yönetimini üstlenerek oyun geliştirme alanında etkinlikler ve çalışmalar organize ediyorum. Üyelerin projelerine katkı sağlıyor, teknik konularda destek veriyorum.</p>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-date">2023 —<br>2024</div>
+            <div class="timeline-line"><div class="timeline-dot"></div></div>
+            <div class="timeline-content">
+                <span class="timeline-tag">Kulüp · Tamamlandı</span>
+                <h3>Yönetici</h3>
+                <p class="company">Uzak Doğu Kulübü — Kırklareli Üniversitesi</p>
+                <p>Uzak doğu kültürü ve sanatları üzerine faaliyet gösteren kulüpte yöneticilik görevini yürüttüm. Etkinlik planlaması ve organizasyonu konusunda deneyim kazandım.</p>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-date">2023</div>
+            <div class="timeline-line"><div class="timeline-dot"></div></div>
+            <div class="timeline-content">
+                <span class="timeline-tag">İş Deneyimi</span>
+                <h3>Banket Personeli</h3>
+                <p class="company">Red Events — Çırağan Sarayı, İstanbul</p>
+                <p>Red Events bünyesinde çeşitli prestijli etkinliklerde görev aldım. Çırağan Sarayı başta olmak üzere üst segment mekânlarda garsonluk ve barmenlik hizmeti vererek yoğun tempo altında takım çalışması ve müşteri ilişkileri deneyimi edindim.</p>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== YETENEKLER ===== -->
+<section class="section fade-up" id="yetenekler">
+    <p class="section-label">03 — Yetenekler</p>
+    <h2 class="section-title">Teknik <span>Bilgiler</span></h2>
+
+    <div class="skills-cols">
+        <div class="skill-item"><div class="skill-dot"></div> HTML & CSS</div>
+        <div class="skill-item"><div class="skill-dot"></div> JavaScript</div>
+        <div class="skill-item"><div class="skill-dot"></div> React.js</div>
+        <div class="skill-item"><div class="skill-dot"></div> Node.js</div>
+        <div class="skill-item"><div class="skill-dot"></div> Python</div>
+        <div class="skill-item"><div class="skill-dot"></div> C</div>
+        <div class="skill-item"><div class="skill-dot"></div> C#</div>
+        <div class="skill-item"><div class="skill-dot"></div> Git & GitHub</div>
+    </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== PROJELER ===== -->
+<section class="section fade-up" id="projeler">
+    <p class="section-label">04 — Projeler</p>
+    <h2 class="section-title">Geliştirdiğim <span>İşler</span></h2>
+
+    <div class="projects-grid">
+
+        <div class="project-card">
+            <div class="project-emoji">🐉</div>
+            <h3>D&D Online Platformu</h3>
+            <p>Masaüstü rol yapma oyunlarını (D&D) çevrimiçi ortamda akıcı biçimde oynamayı sağlayacak interaktif bir web platformu. Şu an aktif geliştirme aşamasında.</p>
+            <div class="project-status"><div class="dot dot-wip"></div> Geliştiriliyor</div>
+        </div>
+
+        <div class="project-card">
+            <div class="project-emoji">🎮</div>
+            <h3>Gekkotari Oyun Portalı</h3>
+            <p>Oyun dünyasını bir araya getirecek modern bir oyun portalı. Arayüz tasarımı ve sistem mimarisi üzerinde çalışıyorum.</p>
+            <div class="project-status"><div class="dot dot-wip"></div> Tasarım Aşaması</div>
+        </div>
+
+        <div class="project-card">
+            <div class="project-emoji">⚙️</div>
+            <h3>Akademik Projeler</h3>
+            <p>Bir akademisyenin talebi üzerine geliştirilen iki farklı sistem. Ana kodlama aşamaları tamamlandı; veritabanı entegrasyonu sürecinde.</p>
+            <div class="project-status"><div class="dot dot-wip"></div> Entegrasyon Aşaması</div>
+        </div>
+
+        <div class="project-card">
+            <div class="project-emoji">🎉</div>
+            <h3>"Surprise" Doğum Günü Platformu</h3>
+            <p>URL parametreleri üzerinden kişiselleştirilmiş mesajlar ve tarihler girerek özel tebrik linkleri oluşturulabilen interaktif bir kutlama platformu. Yayına alındı.</p>
+            <div class="project-status"><div class="dot dot-done"></div> Yayında</div>
+        </div>
+
+        <div class="project-card">
+            <div class="project-emoji">🕹️</div>
+            <h3>Bağımsız Oyun Geliştirme</h3>
+            <p>Farklı teknolojilerle deneyimlemek ve kendi oyun fikirlerimi hayata geçirmek için oyun mekaniği üzerine süregelen çalışmalar.</p>
+            <div class="project-status"><div class="dot dot-active"></div> Devam Ediyor</div>
+        </div>
+
+    </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== EXTRA: DİL & HOBİ ===== -->
+<section class="section fade-up">
+    <p class="section-label">05 — Diğer</p>
+    <h2 class="section-title">Diller & <span>İlgi Alanları</span></h2>
+
+    <div class="extras-grid">
+        <div class="extra-card">
+            <h3>Dil Becerileri</h3>
+            <div class="lang-row">
+                <span>Türkçe</span>
+                <span class="lang-level">Ana Dil</span>
+            </div>
+            <div class="lang-row">
+                <span>İngilizce</span>
+                <span class="lang-level">B2 — Orta-Üstü</span>
+            </div>
+        </div>
+
+        <div class="extra-card">
+            <h3>İlgi Alanları</h3>
+            <div>
+                <div class="hobby-tag">🥊 Kick Boks — Siyah Kuşak</div>
+                <div class="hobby-tag">🎮 Oyun Geliştirme</div>
+                <div class="hobby-tag">🐉 Dungeons & Dragons</div>
+                <div class="hobby-tag">💻 Web Teknolojileri</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== FOOTER / İLETİŞİM ===== -->
+<footer id="iletisim">
+    <h2 class="footer-title">Çalışalım<br><span>mı?</span></h2>
+    <p class="footer-sub">Yeni bir proje fikrin mi var ya da sadece merhaba mı demek istiyorsun?</p>
+    <div class="footer-btns">
+        <a href="mailto:keremhologlu2007@gmail.com"><button class="btn-primary">✉ E-Posta Gönder</button></a>
+        <a href="https://github.com/kreholo" target="_blank"><button class="btn-outline">GitHub Profili</button></a>
+    </div>
+    <p class="footer-copy">Tasarım & Kodlama: Kerem Holoğlu © 2026</p>
+</footer>
+
+<script>
+    // Hamburger menu
+    function openMenu()  { document.getElementById('mobileMenu').classList.add('open'); }
+    function closeMenu() { document.getElementById('mobileMenu').classList.remove('open'); }
+
+    // Fade-up on scroll
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+            if (e.isIntersecting) {
+                e.target.classList.add('visible');
+                observer.unobserve(e.target);
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
 
 </body>
 </html>
